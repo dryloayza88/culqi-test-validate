@@ -5,5 +5,5 @@ import com.culqi.test.model.BinResponse;
 
 public interface TokenService {
 
-    BinResponse response (BinRequest request);
+    BinResponse response (BinRequest request, String header);
 }

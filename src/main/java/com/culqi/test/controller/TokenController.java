@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -17,7 +18,8 @@ public class TokenController {
     private TokenService tokenService;
 
     @PostMapping("/tokens")
-    public BinResponse sendInformation(@RequestBody BinRequest request) {
-        return tokenService.response(request);
+    public BinResponse sendInformation(@RequestBody BinRequest request,
+                                       @RequestHeader(value="Authorization", defaultValue = "") String header) {
+        return tokenService.response(request, header);
     }
 }
