@@ -7,5 +7,8 @@ import lombok.Setter;
 @Setter
 public class ValidationRequest {
 
-    private String validateHeader;
+    private String header;
+
+    public ValidationRequest() {
+    }
 }

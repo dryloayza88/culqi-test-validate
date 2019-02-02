@@ -2,8 +2,9 @@ package com.culqi.test.service;
 
 import com.culqi.test.model.BinRequest;
 import com.culqi.test.model.BinResponse;
+import org.springframework.http.ResponseEntity;
 
 public interface TokenService {
 
-    BinResponse response (BinRequest request, String header);
+    ResponseEntity<?> response (BinRequest request, String header);
 }

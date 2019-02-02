@@ -8,16 +8,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-
-import javax.validation.Validation;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -36,11 +32,11 @@ public class TokenServiceImpl implements TokenService {
     private String api_url2;
 
     @Override
-    public BinResponse response(BinRequest request, String header) {
+    public ResponseEntity<?> response(BinRequest request, String header) {
         BinResponse response = new BinResponse();
         ValidationRequest req = new ValidationRequest();
         if(header != null) {
-            req.setValidateHeader(header);
+            req.setHeader(header);
         }
 
         String digits = request.getPan().substring(0,6);
@@ -50,9 +46,10 @@ public class TokenServiceImpl implements TokenService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("headerValue", header);
 
-        HttpEntity<?> httpEntity = new HttpEntity<Object>(body);
-        ResponseEntity<ValidationRequest> responseEntity = restTemplate.postForObject(api_url2,req,ResponseEntity.class);
-        System.out.println(responseEntity.toString());
+        ResponseEntity<?> responseEntity = restTemplate.postForEntity(api_url2,req,req.getClass());
+        if(responseEntity!=null) {
+            log.info("Respuesta de servicio validate: " + responseEntity.getBody().toString());
+        }
 
         LinkedHashMap lhm = restTemplate.getForObject(api_url, LinkedHashMap.class, params);
         if(lhm != null) {
@@ -62,9 +59,13 @@ public class TokenServiceImpl implements TokenService {
             response.setCreation_dt(df.format(date));
             response.setToken("tkn_live_"+request.getPan()+"-"+request.getExp_year()+"-"+request.getExp_month());
 
-            return response;
+            return ResponseEntity.ok(response);
         } else {
-            return null;
+            if(responseEntity!=null) {
+                return new ResponseEntity<>(responseEntity.getStatusCodeValue(), responseEntity.getStatusCode());
+            } else {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
 
     }
