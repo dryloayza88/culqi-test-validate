@@ -9,6 +9,11 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  containerRegistryServiceConnection: diego-test
+  imageRepository: dryloayza/culqi-test-validate
+  tag: 1.0.0
+
 steps:
 - task: Maven@3
   inputs:
@@ -20,3 +25,26 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
+
+- task: Docker@2
+  displayName: dockerLogin
+  inputs:
+    command: login
+    containerRegistry: $(containerRegistryServiceConnection)
+
+- task: Docker@2
+  displayName: dockerBuild
+  inputs:
+    command: build
+    Dockerfile: Dockerfile
+    tags: |
+      $(tag)
+
+- task: Docker@2
+  displayName: dockerPush
+  inputs:
+    command: push
+    containerRegistry: $(containerRegistryServiceConnection)
+    repository: $(imageRepository)
+    tags: |
+      $(tag)
