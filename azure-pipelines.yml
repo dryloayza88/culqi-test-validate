@@ -23,6 +23,7 @@ steps:
     jdkVersionOption: '1.8'
     jdkArchitectureOption: 'x64'
     publishJUnitResults: true
+    mavenAuthenticateFeed: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
 
@@ -35,6 +36,7 @@ steps:
 - task: Docker@2
   displayName: dockerBuild
   inputs:
+    repository: $(imageRepository)
     command: build
     Dockerfile: Dockerfile
     tags: |
