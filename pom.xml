@@ -15,7 +15,6 @@
     <name>test</name>
     <description>Culqi Test</description>
 
-
     <properties>
         <java.version>1.8</java.version>
         <main.class>TestApplication</main.class>
