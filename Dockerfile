@@ -1,3 +1,3 @@
 FROM openjdk:8
-COPY /target/culqi-test-validate-?.?*.jar .
-CMD java -jar culqi-test-validate-?.?*.jar
+COPY /target/test-?.?*.jar .
+CMD java -jar test-?.?*.jar
