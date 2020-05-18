@@ -40,6 +40,24 @@ steps:
       sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/TestResults/Coverage/coverage.opencover.xml
       sonar.exclusions=**/wwwroot/lib/**/*
 
+- task: Maven@3
+  displayName: 'Execute Maven goal (verify)'
+  inputs:
+    mavenPomFile: 'pom.xml'
+    options: '-Dmaven.test.failure.ignore=true'
+    mavenOptions: '-Xmx3072m'
+    mavenVersionOption: 'Default'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: true
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: true
+    sqMavenPluginVersionChoice: 'latest'
+    codeCoverageToolOption: 'JaCoCo'
+    testResultsFiles: '**/TEST-*.xml'
+    goals: 'verify'
+
 - task: SonarCloudPublish@1
   displayName: 'Publish SonarCloud quality gate results'
 
