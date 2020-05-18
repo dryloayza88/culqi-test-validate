@@ -11,7 +11,7 @@ pool:
 
 variables:
   containerRegistryServiceConnection: diego-test
-  imageRepository: dryloayza/culqi-test-validate
+  imageRepository: dryloayza/test
   tag: 1.0.0
 
 steps:
