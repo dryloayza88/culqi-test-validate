@@ -16,7 +16,7 @@ variables:
 
 steps:
 - task: Maven@3
-  displayName: 'mvn package goal'
+  displayName: 'Execute Maven goal (package)'
   inputs:
     mavenPomFile: 'pom.xml'
     mavenOptions: '-Xmx3072m'
@@ -24,8 +24,7 @@ steps:
     jdkVersionOption: '1.8'
     jdkArchitectureOption: 'x64'
     publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    codeCoverageToolOption: 'jaCoCo'
+    testResultsFiles: '**/TEST-*.xml'
     goals: 'package'
 
 - task: SonarCloudPrepare@1
@@ -40,9 +39,6 @@ steps:
     extraProperties: |
       sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/TestResults/Coverage/coverage.opencover.xml
       sonar.exclusions=**/wwwroot/lib/**/*
-
-- task: SonarCloudAnalyze@1
-  displayName: 'Run SonarCloud code analysis'
 
 - task: SonarCloudPublish@1
   displayName: 'Publish SonarCloud quality gate results'
