@@ -23,7 +23,7 @@ steps:
     jdkVersionOption: '1.8'
     jdkArchitectureOption: 'x64'
     publishJUnitResults: true
-    mavenAuthenticateFeed: true
+    #∫mavenAuthenticateFeed: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
 
@@ -32,7 +32,7 @@ steps:
   inputs:
     SonarCloud: 'diego-sonarcloud'
     organization: '$(SonarOrganization)'
-    scannerMode: 'MSBuild'
+    scannerMode: 'Other'
     projectKey: '$(SonarProjectKey)'
     projectName: '$(SonarProjectName)'
     projectVersion: '$(Build.BuildNumber)'
