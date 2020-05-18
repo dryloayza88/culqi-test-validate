@@ -16,7 +16,7 @@ variables:
 
 steps:
 - task: Maven@3
-  displayName: 'Execute Maven goal (package)'
+  displayName: 'mvn package goal'
   inputs:
     mavenPomFile: 'pom.xml'
     mavenOptions: '-Xmx3072m'
@@ -28,7 +28,7 @@ steps:
     goals: 'package'
 
 - task: SonarCloudPrepare@1
-  displayName: 'Prepare SonarCloud analysis'
+  displayName: 'Preparing SonarCloud analysis'
   inputs:
     SonarCloud: 'diego-sonarcloud'
     organization: '$(SonarOrganization)'
@@ -41,7 +41,7 @@ steps:
       sonar.exclusions=**/wwwroot/lib/**/*
 
 - task: Maven@3
-  displayName: 'Execute Maven goal (verify)'
+  displayName: 'mvn verify goal'
   inputs:
     mavenPomFile: 'pom.xml'
     options: '-Dmaven.test.failure.ignore=true'
@@ -52,14 +52,14 @@ steps:
     jdkArchitectureOption: 'x64'
     publishJUnitResults: true
     effectivePomSkip: false
-    sonarQubeRunAnalysis: true
-    sqMavenPluginVersionChoice: 'latest'
+    #sonarQubeRunAnalysis: true
+    #sqMavenPluginVersionChoice: 'latest'
     codeCoverageToolOption: 'JaCoCo'
     testResultsFiles: '**/TEST-*.xml'
     goals: 'verify'
 
 - task: SonarCloudPublish@1
-  displayName: 'Publish SonarCloud quality gate results'
+  displayName: 'Publishing SonarCloud quality results'
 
 - task: Docker@2
   displayName: dockerLogin
