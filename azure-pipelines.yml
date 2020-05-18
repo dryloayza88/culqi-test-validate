@@ -25,6 +25,9 @@ steps:
     jdkArchitectureOption: 'x64'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    sonarQubeRunAnalysis: true
+    sqMavenPluginVersionChoice: 'latest'
+    codeCoverageToolOption: 'jaCoCo'
     goals: 'package'
 
 - task: SonarCloudPrepare@1
@@ -50,13 +53,6 @@ steps:
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
     jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
-    mavenAuthenticateFeed: false
-    effectivePomSkip: false
-    sonarQubeRunAnalysis: true
-    sqMavenPluginVersionChoice: 'latest'
-    codeCoverageToolOption: 'JaCoCo'
-    testResultsFiles: '**/TEST-*.xml'
     goals: 'verify'
 
 - task: SonarCloudAnalyze@1
