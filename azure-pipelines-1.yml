@@ -10,7 +10,7 @@ resources:
 
 variables:
 
-  # Container registry service connection established during pipeline creation
+  # Container registry service connection
   dockerRegistryServiceConnection: '0581c980-2b52-4ee4-bffe-9082cc365ef7'
   imageRepository: 'dryloayzaculqitestvalidate'
   containerRegistry: 'diegocontainerregistrytest.azurecr.io'
@@ -18,11 +18,62 @@ variables:
   tag: '$(Build.BuildId)'
   imagePullSecret: 'diegocontainerregistrytest4336-auth'
 
-  # Agent VM image name
+  # Image VM that is gonna use.
   vmImageName: 'ubuntu-latest'
   
   # Name of the new namespace being created to deploy the PR changes.
   k8sNamespaceForPR: 'review-app-$(System.PullRequest.PullRequestId)'
+
+steps:
+  # Maven package task
+  - task: Maven@3
+    displayName: 'mvn package goal'
+    inputs:
+      mavenPomFile: 'pom.xml'
+      mavenOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.8'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: true
+      testResultsFiles: '**/TEST-*.xml'
+      goals: 'package'
+
+  # SonarCloud initial analysis
+  - task: SonarCloudPrepare@1
+    displayName: 'Preparing SonarCloud analysis'
+    inputs:
+      SonarCloud: 'diego-sonarcloud'
+      organization: '$(SonarOrganization)'
+      scannerMode: Other
+      projectKey: '$(SonarProjectKey)'
+      projectName: '$(SonarProjectName)'
+      projectVersion: '$(Build.BuildNumber)'
+      extraProperties: |
+        sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/TestResults/Coverage/coverage.opencover.xml
+        sonar.exclusions=**/wwwroot/lib/**/*
+
+  # Maven verify task
+  - task: Maven@3
+    displayName: 'mvn verify goal'
+    inputs:
+      mavenPomFile: 'pom.xml'
+      options: '-Dmaven.test.failure.ignore=true'
+      mavenOptions: '-Xmx3072m'
+      mavenVersionOption: 'Default'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.8'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: true
+      effectivePomSkip: false
+      sonarQubeRunAnalysis: true
+      sqMavenPluginVersionChoice: 'latest'
+      codeCoverageToolOption: 'JaCoCo'
+      testResultsFiles: '**/TEST-*.xml'
+      goals: 'verify'
+
+  # SonarCloud analysis publication
+  - task: SonarCloudPublish@1
+    displayName: 'Publishing SonarCloud quality results'
 
 stages:
 - stage: Build
@@ -34,7 +85,7 @@ stages:
       vmImage: $(vmImageName)
     steps:
     - task: Docker@2
-      displayName: Build and push an image to container registry
+      displayName: Build and push an image to azure container registry
       inputs:
         command: buildAndPush
         repository: $(imageRepository)
