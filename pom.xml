@@ -33,9 +33,9 @@
         <sonar.exclusions>[comma delimited exclusions]</sonar.exclusions>
 
         <!-- Organization and project keys are displayed in the right sidebar of the project homepage -->
-        <sonar.organization>[org name here]</sonar.organization>
-        <sonar.projectKey>[Project key here]</sonar.projectKey>
-        <sonar.login>[SonarCloud auth token (org or user)]</sonar.login>
+        <sonar.organization>diegoyloayza</sonar.organization>
+        <sonar.projectKey>dryloayza88</sonar.projectKey>
+        <sonar.login>e76f7b931162cc5b63dbb16479181529a9b456c1</sonar.login>
 
     </properties>
     <dependencies>
