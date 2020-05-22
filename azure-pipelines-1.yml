@@ -85,7 +85,7 @@ stages:
         jdkArchitectureOption: 'x64'
         publishJUnitResults: true
         effectivePomSkip: false
-        sonarQubeRunAnalysis: true
+        #sonarQubeRunAnalysis: true
         sqMavenPluginVersionChoice: 'latest'
         codeCoverageToolOption: 'JaCoCo'
         testResultsFiles: '**/TEST-*.xml'
