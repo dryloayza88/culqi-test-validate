@@ -34,7 +34,7 @@
 
         <!-- Organization and project keys are displayed in the right sidebar of the project homepage -->
         <sonar.organization>diegoyloayza</sonar.organization>
-        <sonar.projectKey>dryloayza88</sonar.projectKey>
+        <sonar.projectKey>e7babc18333442c1cac216c6a9a1b023f9f6078c</sonar.projectKey>
         <sonar.login>e76f7b931162cc5b63dbb16479181529a9b456c1</sonar.login>
 
     </properties>
