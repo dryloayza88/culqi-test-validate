@@ -30,12 +30,12 @@
         <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <sonar.exclusions>[comma delimited exclusions]</sonar.exclusions>
+        <!-- <sonar.exclusions>[comma delimited exclusions]</sonar.exclusions> -->
 
         <!-- Organization and project keys are displayed in the right sidebar of the project homepage -->
-        <sonar.organization>[diegoyloayza]</sonar.organization>
-        <sonar.projectKey>[dryloayza88]</sonar.projectKey>
-        <sonar.login>[e76f7b931162cc5b63dbb16479181529a9b456c1]</sonar.login>
+        <sonar.organization>diegoyloayza</sonar.organization>
+        <sonar.projectKey>dryloayza88</sonar.projectKey>
+        <sonar.login>e76f7b931162cc5b63dbb16479181529a9b456c1</sonar.login>
 
     </properties>
     <dependencies>
@@ -156,7 +156,7 @@
                         <include>**/*.class</include>
                     </includes>
 
-                    <groups>[integration test package]</groups>
+                    <!-- <groups>[integration test package]</groups> -->
                 </configuration>
 
             </plugin>
@@ -167,7 +167,7 @@
             <id>sonar</id>
             <properties>
                 <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-                <sonar.organization>[organization]</sonar.organization>
+                <sonar.organization>diegoyloayza</sonar.organization>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
