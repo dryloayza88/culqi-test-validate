@@ -1,0 +1,16 @@
+apiVersion : apps/v1beta1
+kind: Deployment
+metadata:
+  name: dryloayzaculqitestvalidate 
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: dryloayzaculqitestvalidate 
+    spec:
+      containers:
+        - name: dryloayzaculqitestvalidate 
+          image: diegocontainerregistrytest.azurecr.io/dryloayzaculqitestvalidate
+          ports:
+          - containerPort: 80
