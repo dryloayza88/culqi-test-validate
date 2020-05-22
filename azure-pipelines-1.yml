@@ -24,60 +24,89 @@ variables:
   # Name of the new namespace being created to deploy the PR changes.
   k8sNamespaceForPR: 'review-app-$(System.PullRequest.PullRequestId)'
 
-steps:
-  # Maven package task
-  - task: Maven@3
-    displayName: 'mvn package goal'
-    inputs:
-      mavenPomFile: 'pom.xml'
-      mavenOptions: '-Xmx3072m'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.8'
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: true
-      testResultsFiles: '**/TEST-*.xml'
-      goals: 'package'
-
-  # SonarCloud initial analysis
-  - task: SonarCloudPrepare@1
-    displayName: 'Preparing SonarCloud analysis'
-    inputs:
-      SonarCloud: 'diego-sonarcloud'
-      organization: '$(SonarOrganization)'
-      scannerMode: Other
-      projectKey: '$(SonarProjectKey)'
-      projectName: '$(SonarProjectName)'
-      projectVersion: '$(Build.BuildNumber)'
-      extraProperties: |
-        sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/TestResults/Coverage/coverage.opencover.xml
-        sonar.exclusions=**/wwwroot/lib/**/*
-
-  # Maven verify task
-  - task: Maven@3
-    displayName: 'mvn verify goal'
-    inputs:
-      mavenPomFile: 'pom.xml'
-      options: '-Dmaven.test.failure.ignore=true'
-      mavenOptions: '-Xmx3072m'
-      mavenVersionOption: 'Default'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.8'
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: true
-      effectivePomSkip: false
-      sonarQubeRunAnalysis: true
-      sqMavenPluginVersionChoice: 'latest'
-      codeCoverageToolOption: 'JaCoCo'
-      testResultsFiles: '**/TEST-*.xml'
-      goals: 'verify'
-
-  # SonarCloud analysis publication
-  - task: SonarCloudPublish@1
-    displayName: 'Publishing SonarCloud quality results'
-
 stages:
+- stage: Package
+  displayName: Maven package
+  jobs:
+  - job: Package
+    displayName: Maven Package
+    steps:
+      # Maven package task
+    - task: Maven@3
+      displayName: 'mvn package goal'
+      inputs:
+        mavenPomFile: 'pom.xml'
+        mavenOptions: '-Xmx3072m'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.8'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: true
+        testResultsFiles: '**/TEST-*.xml'
+        goals: 'package'
+
+- stage: SonarCloudPrepare
+  displayName: SonarCloudPrepare
+  dependsOn: Package
+
+  jobs:
+  - job: SonarCloudPrepare
+    displayName: SonarCloudPrepare
+    steps:
+    - task: SonarCloudPrepare@1
+      displayName: 'Preparing SonarCloud analysis'
+      inputs:
+        SonarCloud: 'diego-sonarcloud'
+        organization: '$(SonarOrganization)'
+        scannerMode: Other
+        projectKey: '$(SonarProjectKey)'
+        projectName: '$(SonarProjectName)'
+        projectVersion: '$(Build.BuildNumber)'
+        extraProperties: |
+          sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/TestResults/Coverage/coverage.opencover.xml
+          sonar.exclusions=**/wwwroot/lib/**/*
+
+- stage: MavenVerify
+  displayName: Maven Verify
+  dependsOn: SonarCloudPrepare
+
+  jobs:
+  - job: MavenVerify
+    displayName: Maven Verify
+    steps:
+    - task: Maven@3
+      displayName: 'mvn verify goal'
+      inputs:
+        mavenPomFile: 'pom.xml'
+        options: '-Dmaven.test.failure.ignore=true'
+        mavenOptions: '-Xmx3072m'
+        mavenVersionOption: 'Default'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.8'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: true
+        effectivePomSkip: false
+        sonarQubeRunAnalysis: true
+        sqMavenPluginVersionChoice: 'latest'
+        codeCoverageToolOption: 'JaCoCo'
+        testResultsFiles: '**/TEST-*.xml'
+        goals: 'verify'
+
+- stage: SonarCloudPublish
+  displayName: SonarCloudPublish
+  dependsOn: MavenVerify
+
+  jobs:
+  - job: SonarCloudPublish
+    displayName: SonarCloudPublish
+    steps:
+    # SonarCloud analysis publication
+    - task: SonarCloudPublish@1
+      displayName: 'Publishing SonarCloud quality results'
+
 - stage: Build
   displayName: Build stage
+  dependsOn: SonarCloudPublish
+
   jobs:  
   - job: Build
     displayName: Build
