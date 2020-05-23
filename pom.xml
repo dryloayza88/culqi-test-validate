@@ -56,12 +56,23 @@
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.7.0.1746</version>
+                <version>3.5.0.1254</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sonar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.5</version>
+                <version>0.8.2</version>
+                <configuration>
+                    <append>true</append>
+                </configuration>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
@@ -70,8 +81,14 @@
                         </goals>
                     </execution>
                     <execution>
-                        <id>report</id>
-                        <phase>prepare-package</phase>
+                        <id>prepare-agent-integration</id>
+                        <goals>
+                            <goal>prepare-agent-integration</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jacoco-site</id>
+                        <phase>verify</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
@@ -83,27 +100,20 @@
 
     <profiles>
         <profile>
-            <id>coverage</id>
+            <id>sonar</id>
+            <properties>
+                <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+                <sonar.organization>dryloayza88</sonar.organization>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>0.8.5</version>
-                        <executions>
-                            <execution>
-                                <id>prepare-agent</id>
-                                <goals>
-                                    <goal>prepare-agent</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>report</id>
-                                <goals>
-                                    <goal>report</goal>
-                                </goals>
-                            </execution>
-                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonarsource.scanner.maven</groupId>
+                        <artifactId>sonar-maven-plugin</artifactId>
                     </plugin>
                 </plugins>
             </build>
