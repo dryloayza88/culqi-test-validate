@@ -70,26 +70,23 @@ stages:
   dependsOn: SonarCloudPrepare
 
   jobs:
-  - job: MavenVerify
+  - job: JaCoCo & SonarQube Configuration
     displayName: Maven Verify
     steps:
+    # Deploy to Azure Kubernetes Service
     - task: Maven@3
-      displayName: 'mvn verify goal'
       inputs:
         mavenPomFile: 'pom.xml'
-        options: '-Dmaven.test.failure.ignore=true'
-        mavenOptions: '-Xmx3072m'
-        mavenVersionOption: 'Default'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '1.8'
-        jdkArchitectureOption: 'x64'
         publishJUnitResults: true
+        testResultsFiles: '**/surefire-reports/TEST-*.xml'
+        codeCoverageToolOption: 'JaCoCo'
+        codeCoverageClassFilter: '+:com'
+        javaHomeOption: 'JDKVersion'
+        mavenVersionOption: 'Default'
+        mavenAuthenticateFeed: false
         effectivePomSkip: false
         sonarQubeRunAnalysis: true
         sqMavenPluginVersionChoice: 'latest'
-        codeCoverageToolOption: 'JaCoCo'
-        testResultsFiles: '**/TEST-*.xml'
-        goals: 'verify'
 
 - stage: SonarCloudPublish
   displayName: SonarCloudPublish
