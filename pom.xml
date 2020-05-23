@@ -24,18 +24,18 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <!-- Sonar -->
-        <sonar.jacoco.reportPath>${project.basedir}/target/jacoco/jacoco-ut.exec</sonar.jacoco.reportPath>
         <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/jacoco/jacoco-ut/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
         <sonar.language>java</sonar.language>
         <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
-        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+        <!-- <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis> -->
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <!-- <sonar.exclusions>[comma delimited exclusions]</sonar.exclusions> -->
+        <sonar.buildbreaker.skip>true</sonar.buildbreaker.skip>
+        <sonar.exclusions>**/*.js</sonar.exclusions>
 
         <!-- Organization and project keys are displayed in the right sidebar of the project homepage -->
         <sonar.organization>dryloayza88</sonar.organization>
-        <sonar.projectKey>dryloayza88</sonar.projectKey>
-        <sonar.login>e76f7b931162cc5b63dbb16479181529a9b456c1</sonar.login>
+        <sonar.projectKey>3e26a63d8c11d77798c263d84d9858c10c89ca26</sonar.projectKey>
+        <sonar.login>3e26a63d8c11d77798c263d84d9858c10c89ca26</sonar.login>
     </properties>
     <dependencies>
         <dependency>
@@ -162,6 +162,8 @@
             <properties>
                 <sonar.host.url>https://sonarcloud.io</sonar.host.url>
                 <sonar.organization>dryloayza88</sonar.organization>
+                <sonar.projectKey>3e26a63d8c11d77798c263d84d9858c10c89ca26</sonar.projectKey>
+                <sonar.login>3e26a63d8c11d77798c263d84d9858c10c89ca26</sonar.login>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
