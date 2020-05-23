@@ -87,23 +87,20 @@ stages:
             sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/TestResults/Coverage/coverage.opencover.xml
             sonar.exclusions=**/wwwroot/lib/**/*
 
-- stage: SonarCloudConfiguration
-  displayName: SonarCloudConfiguration
+- stage: SonarCloudAnalyze
+  displayName: SonarCloudAnalyze
   dependsOn: SonarCloudPrepare
 
   jobs:
-  - job: SonarCloudConfiguration
-    displayName: SonarCloudConfiguration
+  - job: SonarCloudAnalyze
+    displayName: SonarCloudAnalyze
     steps:
-      - task: SonarCloudPrepare@1
-        inputs:
-          SonarCloud: 'diego-sonarcloud'
-          organization: '$(SonarOrganization)'
-          scannerMode: 'Other'
+      - task: SonarCloudAnalyze@1
+        displayName: 'Run SonarCloud code analysis'
 
 - stage: SonarCloudPublish
   displayName: SonarCloudPublish
-  dependsOn: SonarCloudConfiguration
+  dependsOn: SonarCloudAnalyze
 
   jobs:
   - job: SonarCloudPublish
@@ -111,6 +108,8 @@ stages:
     steps:
     - task: SonarCloudPublish@1
       displayName: 'Publishing SonarCloud quality results'
+      inputs:
+        pollingTimeoutSec: '300'
 
 - stage: Build
   displayName: Build stage
