@@ -90,7 +90,7 @@ stages:
 
 - stage: SonarCloudPublish
   displayName: SonarCloudPublish
-  dependsOn: MavenVerify
+  dependsOn: JaCoCoSonarQubeConfiguration
 
   jobs:
   - job: SonarCloudPublish
