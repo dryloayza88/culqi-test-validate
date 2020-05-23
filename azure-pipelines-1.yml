@@ -70,8 +70,8 @@ stages:
   dependsOn: SonarCloudPrepare
 
   jobs:
-  - job: JaCoCo & SonarQube Configuration
-    displayName: Maven Verify
+  - job: JaCoCo and SonarQube Configuration
+    displayName: JaCoCo and SonarQube Configuration
     steps:
     # Deploy to Azure Kubernetes Service
     - task: Maven@3
