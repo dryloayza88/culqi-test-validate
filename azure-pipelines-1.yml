@@ -65,8 +65,8 @@ stages:
           sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/TestResults/Coverage/coverage.opencover.xml
           sonar.exclusions=**/wwwroot/lib/**/*
 
-- stage: MavenVerify
-  displayName: Maven Verify
+- stage: JaCoCoSonarQubeConfiguration
+  displayName: JaCoCoSonarQubeConfiguration
   dependsOn: SonarCloudPrepare
 
   jobs:
