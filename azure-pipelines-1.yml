@@ -44,9 +44,30 @@ stages:
         testResultsFiles: '**/TEST-*.xml'
         goals: 'package'
 
+- stage: SonarCloudPrepare
+  displayName: SonarCloudPrepare
+  dependsOn: Package
+
+  jobs:
+  - job: SonarCloudPrepare
+    displayName: SonarCloudPrepare
+    steps:
+    - task: SonarCloudPrepare@1
+      displayName: 'Preparing SonarCloud analysis'
+        inputs:
+          SonarCloud: 'diego-sonarcloud'
+          organization: '$(SonarOrganization)'
+          scannerMode: 'Other'
+          projectKey: '$(SonarProjectKey)'
+          projectName: '$(SonarProjectName)'
+          projectVersion: '$(Build.BuildNumber)'
+          extraProperties: |
+            sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/TestResults/Coverage/coverage.opencover.xml
+            sonar.exclusions=**/wwwroot/lib/**/*
+
 - stage: MavenVerify
   displayName: Maven Verify
-  dependsOn: Package
+  dependsOn: SonarCloudPrepare
 
   jobs:
   - job: JaCoCoSonarQubeConfiguration
@@ -66,26 +87,19 @@ stages:
         sonarQubeRunAnalysis: true
         sqMavenPluginVersionChoice: 'latest'
 
-- stage: SonarCloudPrepare
-  displayName: SonarCloudPrepare
+- stage: SonarCloudPrepareConfiguration
+  displayName: SonarCloudConfiguration
   dependsOn: MavenVerify
 
   jobs:
-  - job: SonarCloudPrepare
-    displayName: SonarCloudPrepare
+  - job: SonarCloudConfiguration
+    displayName: SonarCloudConfiguration
     steps:
-      - task: SonarCloudPrepare@1
-        displayName: 'Preparing SonarCloud analysis'
-        inputs:
-          SonarCloud: 'diego-sonarcloud'
-          organization: '$(SonarOrganization)'
-          scannerMode: Other
-          projectKey: '$(SonarProjectKey)'
-          projectName: '$(SonarProjectName)'
-          projectVersion: '$(Build.BuildNumber)'
-          extraProperties: |
-            sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/TestResults/Coverage/coverage.opencover.xml
-            sonar.exclusions=**/wwwroot/lib/**/*
+    - task: SonarCloudPrepare@1
+      inputs:
+        SonarCloud: 'diego-sonarcloud'
+        organization: '$(SonarOrganization)'
+        scannerMode: 'Other'
 
 - stage: SonarCloudPublish
   displayName: SonarCloudPublish
