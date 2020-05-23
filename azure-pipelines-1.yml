@@ -73,7 +73,6 @@ stages:
   - job: JaCoCoSonarQubeConfiguration
     displayName: JaCoCoSonarQubeConfiguration
     steps:
-    # Deploy to Azure Kubernetes Service
     - task: Maven@3
       inputs:
         mavenPomFile: 'pom.xml'
@@ -88,15 +87,25 @@ stages:
         sonarQubeRunAnalysis: true
         sqMavenPluginVersionChoice: 'latest'
 
+- stage: SonarCloudAnalysis
+  displayName: SonarCloudAnalysis
+  dependsOn: MavenVerify
+
+  jobs:
+  - job: SonarCloudAnalysis
+    displayName: SonarCloudAnalysis
+    steps:
+    - task: SonarCloudAnalyze@1
+      displayName: 'Run SonarCloud code analysis'
+
 - stage: SonarCloudPublish
   displayName: SonarCloudPublish
-  dependsOn: MavenVerify
+  dependsOn: SonarCloudAnalysis
 
   jobs:
   - job: SonarCloudPublish
     displayName: SonarCloudPublish
     steps:
-    # SonarCloud analysis publication
     - task: SonarCloudPublish@1
       displayName: 'Publishing SonarCloud quality results'
 
