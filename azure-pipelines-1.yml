@@ -25,8 +25,22 @@ variables:
   k8sNamespaceForPR: 'review-app-$(System.PullRequest.PullRequestId)'
 
 stages:
+- stage: SonarCloudPrepare
+  displayName: SonarCloudPrepare
+  jobs:
+    - job: SonarCloudPrepare
+      displayName: SonarCloudPrepare
+      steps:
+        - task: SonarCloudPrepare@1
+          displayName: 'Preparing SonarCloud analysis'
+          inputs:
+            SonarCloud: 'diego-sonarcloud'
+            organization: '$(SonarOrganization)'
+            scannerMode: 'Other'
+
 - stage: Package
   displayName: Maven package
+  dependsOn: SonarCloudPrepare
   jobs:
   - job: Package
     displayName: Maven Package
@@ -37,12 +51,18 @@ stages:
       inputs:
         mavenPomFile: 'pom.xml'
         mavenOptions: '-Xmx3072m'
+        mavenVersionOption: 'Default'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: '1.8'
         jdkArchitectureOption: 'x64'
         publishJUnitResults: true
+        effectivePomSkip: false
+        sonarQubeRunAnalysis: true
+        sqMavenPluginVersionChoice: 'latest'
+        codeCoverageToolOption: 'JaCoCo'
         testResultsFiles: '**/TEST-*.xml'
         goals: 'package'
+
     - task: PublishTestResults@2
       displayName: Publish test
       inputs:
@@ -56,21 +76,6 @@ stages:
         codeCoverageTool: 'JaCoCo'
         summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/jacoco.xml'
         failIfCoverageEmpty: false
-
-- stage: SonarCloudPrepare
-  displayName: SonarCloudPrepare
-  dependsOn: Package
-
-  jobs:
-    - job: SonarCloudPrepare
-      displayName: SonarCloudPrepare
-      steps:
-        - task: SonarCloudPrepare@1
-          displayName: 'Preparing SonarCloud analysis'
-          inputs:
-            SonarCloud: 'diego-sonarcloud'
-            organization: '$(SonarOrganization)'
-            scannerMode: 'Other'
 
 - stage: SonarCloudPublish
   displayName: SonarCloudPublish
