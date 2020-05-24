@@ -43,6 +43,19 @@ stages:
         publishJUnitResults: true
         testResultsFiles: '**/TEST-*.xml'
         goals: 'package'
+    - task: PublishTestResults@2
+      displayName: Publish test
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/TEST-*.xml'
+        testRunTitle: 'Test Results'
+        failTaskOnFailedTests: true
+    - task: PublishCodeCoverageResults@1
+      displayName: Publish coverage
+      inputs:
+        codeCoverageTool: 'JaCoCo'
+        summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/jacoco.xml'
+        failIfCoverageEmpty: true
 
 - stage: SonarCloudPrepare
   displayName: SonarCloudPrepare
@@ -59,44 +72,9 @@ stages:
             organization: '$(SonarOrganization)'
             scannerMode: 'Other'
 
-- stage: MavenVerify
-  displayName: Maven Verify
-  dependsOn: SonarCloudPrepare
-
-  jobs:
-  - job: JaCoCoSonarQubeConfiguration
-    displayName: JaCoCoSonarQubeConfiguration
-    steps:
-    - task: Maven@3
-      inputs:
-        mavenPomFile: 'pom.xml'
-        publishJUnitResults: true
-        testResultsFiles: '**/surefire-reports/TEST-*.xml'
-        codeCoverageToolOption: 'JaCoCo'
-        codeCoverageClassFilter: '+:com'
-        javaHomeOption: 'JDKVersion'
-        mavenVersionOption: 'Default'
-        mavenAuthenticateFeed: false
-        effectivePomSkip: false
-        sonarQubeRunAnalysis: true
-        sqMavenPluginVersionChoice: 'latest'
-    - task: PublishTestResults@2
-      displayName: Publish test
-      inputs:
-        testResultsFormat: 'JUnit'
-        testResultsFiles: '**/TEST-*.xml'
-        testRunTitle: 'Test Results'
-        failTaskOnFailedTests: true
-    - task: PublishCodeCoverageResults@1
-      displayName: Publish coverage
-      inputs:
-        codeCoverageTool: 'JaCoCo'
-        summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/jacoco.xml'
-        failIfCoverageEmpty: true
-
 - stage: SonarCloudPublish
   displayName: SonarCloudPublish
-  dependsOn: MavenVerify
+  dependsOn: SonarCloudPrepare
 
   jobs:
   - job: SonarCloudPublish
