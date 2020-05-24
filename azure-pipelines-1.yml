@@ -56,11 +56,12 @@ stages:
         jdkVersionOption: '1.8'
         jdkArchitectureOption: 'x64'
         publishJUnitResults: true
+        mavenAuthenticateFeed: true
         effectivePomSkip: false
         sonarQubeRunAnalysis: true
         sqMavenPluginVersionChoice: 'latest'
         codeCoverageToolOption: 'JaCoCo'
-        testResultsFiles: '**/TEST-*.xml'
+        testResultsFiles: '**/surefire-reports/TEST-*.xml'
         goals: 'package'
 
     - task: PublishTestResults@2
