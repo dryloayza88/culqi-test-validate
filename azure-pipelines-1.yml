@@ -5,11 +5,7 @@
 trigger:
 - master
 
-resources:
-- repo: self
-
 variables:
-
   # Container registry service connection
   dockerRegistryServiceConnection: '0581c980-2b52-4ee4-bffe-9082cc365ef7'
   imageRepository: 'dryloayzaculqitestvalidate'
