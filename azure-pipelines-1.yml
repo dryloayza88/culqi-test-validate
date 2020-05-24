@@ -45,9 +45,9 @@ stages:
   - job: Package
     displayName: Maven Package
     steps:
-      # Maven package task
+      # Maven build task
     - task: Maven@3
-      displayName: 'mvn package goal'
+      displayName: 'mvn build goal'
       inputs:
         mavenPomFile: 'pom.xml'
         mavenOptions: '-Xmx3072m'
@@ -61,7 +61,7 @@ stages:
         sqMavenPluginVersionChoice: 'latest'
         codeCoverageToolOption: 'JaCoCo'
         testResultsFiles: '**/TEST-*.xml'
-        goals: 'package'
+        goals: 'build'
 
     - task: PublishTestResults@2
       displayName: Publish test
