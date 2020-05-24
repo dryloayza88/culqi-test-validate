@@ -77,6 +77,17 @@ stages:
         codeCoverageTool: 'JaCoCo'
         summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/jacoco.xml'
         failIfCoverageEmpty: false
+    - task: CopyFiles@2
+      displayName: Copying artifact to $(System.DefaultWorkingDirectory)
+      inputs:
+        contents: '$(System.DefaultWorkingDirectory)/**/test-2.1.2.RELEASE.jar'
+        targetFolder: $(Build.ArtifactStagingDirectory)
+    - task: PublishBuildArtifacts@1
+      displayName: Publishing artifact
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'test'
+        publishLocation: 'Container'
 
 - stage: SonarCloudPublish
   displayName: SonarCloudPublish
