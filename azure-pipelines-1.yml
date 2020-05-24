@@ -80,6 +80,19 @@ stages:
         effectivePomSkip: false
         sonarQubeRunAnalysis: true
         sqMavenPluginVersionChoice: 'latest'
+    - task: PublishTestResults@2
+      displayName: Publish test
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/TEST-*.xml'
+        testRunTitle: 'Test Results'
+        failTaskOnFailedTests: true
+    - task: PublishCodeCoverageResults@1
+      displayName: Publish coverage
+      inputs:
+        codeCoverageTool: 'JaCoCo'
+        summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/jacoco.xml'
+        failIfCoverageEmpty: true
 
 - stage: SonarCloudPublish
   displayName: SonarCloudPublish
@@ -95,8 +108,6 @@ stages:
         SonarCloud: 'diego-sonarcloud'
         organization: '$(SonarOrganization)'
         scannerMode: 'Other'
-    - task: SonarCloudAnalyze@1
-      displayName: 'Run SonarCloud code analysis'
     - task: SonarCloudPublish@1
       displayName: 'Publishing SonarCloud quality results'
       inputs:
