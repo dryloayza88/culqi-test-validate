@@ -8,6 +8,8 @@
         <version>2.1.2.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
+    <packaging>jar</packaging>
     <groupId>com.culqi</groupId>
     <artifactId>test</artifactId>
     <description>Culqi Test</description>
