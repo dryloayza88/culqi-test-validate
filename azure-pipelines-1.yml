@@ -68,7 +68,7 @@ stages:
       displayName: Publish test
       inputs:
         testResultsFormat: 'JUnit'
-        testResultsFiles: '**/TEST-*.xml'
+        testResultsFiles: '**/surefire-reports/TEST-*.xml'
         testRunTitle: 'Test Results'
         failTaskOnFailedTests: true
     - task: PublishCodeCoverageResults@1
