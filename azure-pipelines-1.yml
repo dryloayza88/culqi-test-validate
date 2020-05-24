@@ -15,7 +15,7 @@ variables:
   imageRepository: 'dryloayzaculqitestvalidate'
   containerRegistry: 'diegocontainerregistrytest.azurecr.io'
   dockerfilePath: '**/Dockerfile'
-  tag: '$(Build.BuildId)'
+  tag: '0.0.1'
   imagePullSecret: 'diegocontainerregistrytest4336-auth'
 
   # Image VM that is gonna use.
