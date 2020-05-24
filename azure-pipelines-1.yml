@@ -89,19 +89,8 @@ stages:
   - job: SonarCloudPublish
     displayName: SonarCloudPublish
     steps:
-    - task: Maven@3
-      inputs:
-        mavenPomFile: 'pom.xml'
-        publishJUnitResults: true
-        testResultsFiles: '**/surefire-reports/TEST-*.xml'
-        codeCoverageToolOption: 'JaCoCo'
-        codeCoverageClassFilter: '+:com'
-        javaHomeOption: 'JDKVersion'
-        mavenVersionOption: 'Default'
-        mavenAuthenticateFeed: false
-        effectivePomSkip: false
-        sonarQubeRunAnalysis: true
-        sqMavenPluginVersionChoice: 'latest'
+    - task: SonarCloudAnalyze@1
+      displayName: 'Run SonarCloud code analysis'
     - task: SonarCloudPrepare@1
       displayName: 'Preparing SonarCloud analysis'
       inputs:
@@ -123,11 +112,6 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-    - task: Docker@2
-      displayName: Login to ACR
-      inputs:
-        command: login
-        containerRegistry: $(dockerRegistryServiceConnection)
     - task: Docker@2
       displayName: Build and push an image to azure container registry
       inputs:
