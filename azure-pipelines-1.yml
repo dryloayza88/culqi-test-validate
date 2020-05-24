@@ -58,12 +58,6 @@ stages:
             SonarCloud: 'diego-sonarcloud'
             organization: '$(SonarOrganization)'
             scannerMode: 'Other'
-            projectKey: '$(SonarProjectKey)'
-            projectName: '$(SonarProjectName)'
-            projectVersion: '$(Build.BuildNumber)'
-            extraProperties: |
-              sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/TestResults/Coverage/coverage.opencover.xml
-              sonar.exclusions=**/wwwroot/lib/**/*
 
 - stage: MavenVerify
   displayName: Maven Verify
@@ -95,8 +89,6 @@ stages:
   - job: SonarCloudPublish
     displayName: SonarCloudPublish
     steps:
-    - task: SonarCloudAnalyze@1
-      displayName: 'Run SonarCloud code analysis'
     - task: SonarCloudPublish@1
       displayName: 'Publishing SonarCloud quality results'
       inputs:
