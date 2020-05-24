@@ -95,6 +95,8 @@ stages:
   - job: SonarCloudPublish
     displayName: SonarCloudPublish
     steps:
+    - task: SonarCloudAnalyze@1
+      displayName: 'Run SonarCloud code analysis'
     - task: SonarCloudPublish@1
       displayName: 'Publishing SonarCloud quality results'
       inputs:
