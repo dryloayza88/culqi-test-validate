@@ -89,14 +89,14 @@ stages:
   - job: SonarCloudPublish
     displayName: SonarCloudPublish
     steps:
-    - task: SonarCloudAnalyze@1
-      displayName: 'Run SonarCloud code analysis'
     - task: SonarCloudPrepare@1
       displayName: 'Preparing SonarCloud analysis'
       inputs:
         SonarCloud: 'diego-sonarcloud'
         organization: '$(SonarOrganization)'
         scannerMode: 'Other'
+    - task: SonarCloudAnalyze@1
+      displayName: 'Run SonarCloud code analysis'
     - task: SonarCloudPublish@1
       displayName: 'Publishing SonarCloud quality results'
       inputs:
