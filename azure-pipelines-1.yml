@@ -83,7 +83,7 @@ stages:
         contents: '$(System.DefaultWorkingDirectory)/**/test-2.1.2.RELEASE.jar'
         targetFolder: $(Build.ArtifactStagingDirectory)
     - task: PublishBuildArtifacts@1
-      displayName: Publishing artifact
+      displayName: Publishing artifact to $(Build.ArtifactStagingDirectory)
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'test'
