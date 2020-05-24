@@ -79,7 +79,7 @@ stages:
 
 - stage: SonarCloudPublish
   displayName: SonarCloudPublish
-  dependsOn: SonarCloudPrepare
+  dependsOn: Package
 
   jobs:
   - job: SonarCloudPublish
