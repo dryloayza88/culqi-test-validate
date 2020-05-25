@@ -16,7 +16,7 @@ variables:
 
   # Image VM that is gonna use.
   vmImageName: 'ubuntu-latest'
-  
+  k8sNamespace: 'diego-k8s-namespace'
   # Name of the new namespace being created to deploy the PR changes.
   k8sNamespaceForPR: 'review-app-$(System.PullRequest.PullRequestId)'
 
