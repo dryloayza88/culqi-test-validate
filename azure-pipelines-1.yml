@@ -136,13 +136,9 @@ stages:
         command: 'push'
         tags: |
           $(tag)
-    - task: PublishPipelineArtifact@1
-      inputs:
-        artifactName: 'manifests'
-        path: 'manifests'
           
- #   - upload: manifests
-  #    artifact: manifests
+    - upload: manifests
+      artifact: manifests
 
 - stage: Deploy
   displayName: Deploy stage
@@ -163,7 +159,7 @@ stages:
             displayName: Create imagePullSecret
             inputs:
               action: createSecret
-              namespace: 'default'
+              namespace: $(k8sNamespaceForPR)
               secretName: $(imagePullSecret)
               dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
               
@@ -171,7 +167,7 @@ stages:
             displayName: Deploy to Kubernetes cluster
             inputs:
               action: deploy
-              namespace: 'default'
+              namespace: $(k8sNamespaceForPR)
               manifests: |
                 $(Pipeline.Workspace)/manifests/deployment.yml
                 $(Pipeline.Workspace)/manifests/service.yml
