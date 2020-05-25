@@ -1,3 +1,4 @@
+#Dockerfile
 FROM openjdk:8-jdk-alpine
 RUN mkdir -p /usr/local/app
 WORKDIR /usr/local/app
