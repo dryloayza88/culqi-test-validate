@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   name: dryloayzaculqitestvalidate
 spec:
-  progressDeadlineSeconds: 3600
   replicas: 1
   template:
     metadata:
@@ -13,6 +12,7 @@ spec:
       containers:
         - name: dryloayzaculqitestvalidate
           image: diegocontainerregistrytest.azurecr.io/dryloayzaculqitestvalidate
+          imagePullPolicy: Always
           ports:
           - containerPort: 80
   selector:
