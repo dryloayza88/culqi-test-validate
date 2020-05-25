@@ -166,7 +166,6 @@ stages:
             inputs:
               action: createSecret
               kubernetesServiceConnection: 'diegoAppAKS-default'
-              namespace: 'prueba'
               secretType: 'dockerRegistry'
               secretName: $(imagePullSecret)
               dockerRegistryEndpoint: 'diegoContainerRegistryTest'
@@ -175,7 +174,6 @@ stages:
             inputs:
               action: deploy
               kubernetesServiceConnection: 'diegoAppAKS-default'
-              namespace: 'prueba'
               manifests: |
                 $(Pipeline.Workspace)/manifests/deployment.yml
                 $(Pipeline.Workspace)/manifests/service.yml
