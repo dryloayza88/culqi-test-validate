@@ -152,7 +152,7 @@ stages:
     displayName: Deploy job
     pool:
       vmImage: $(vmImageName)
-    environment: 'dryloayza88culqitestvalidate.default'
+    environment: 'dryloayza88culqitestvalidate'
     strategy:
       runOnce:
         deploy:
