@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: dryloayzadeployment
-          image: diegocontainerregistrytest.azurecr.io/dryloayzaculqitestvalidate
+          image: diegocontainerregistrytest.azurecr.io/dryloayzaculqitestvalidate:0.0.1
           imagePullPolicy: Always
           ports:
           - containerPort: 8085
