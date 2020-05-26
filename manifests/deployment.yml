@@ -6,22 +6,17 @@ metadata:
     app: dryloayzaculqitestvalidate
 spec:
   replicas: 1
-  progressDeadlineSeconds: 120
-  strategy:
-    rollingUpdate:
-      maxSurge: 0
-      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: dryloayzaculqitestvalidate
   template:
     metadata:
       labels:
         app: dryloayzaculqitestvalidate 
     spec:
       containers:
-        - name: dryloayzaculqitestvalidate
+        - name: dryloayzadeployment
           image: diegocontainerregistrytest.azurecr.io/dryloayzaculqitestvalidate
           imagePullPolicy: Always
           ports:
-          - containerPort: 80
-  selector:
-    matchLabels:
-      app: dryloayzaculqitestvalidate
+          - containerPort: 8085
