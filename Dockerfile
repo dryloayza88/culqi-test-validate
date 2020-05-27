@@ -13,8 +13,12 @@
 #EXPOSE 8188
 
 FROM openjdk:8-jdk-alpine
-RUN mkdir /usr/myapp
-COPY target/test-2.1.2.RELEASE.jar /usr/myapp/app.jar
-WORKDIR /usr/myapp
-EXPOSE 8080
-CMD ["java", "-Xms128m", "-Xmx256m", "-jar", "app.jar"]
+VOLUME /tmp
+ARG JAR_FILE=target/*.jar
+#RUN mkdir /usr/myapp
+#COPY target/test-2.1.2.RELEASE.jar /usr/myapp/app.jar
+#WORKDIR /usr/myapp
+#EXPOSE 8080
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java", "-jar", "/app.jar"]
+#CMD ["java", "-Xms128m", "-Xmx256m", "-jar", "app.jar"]
