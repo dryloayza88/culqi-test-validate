@@ -6,7 +6,8 @@
 #EXPOSE 8085
 #EXPOSE 8085
 #CMD ["java","-jar","/test-2.1.2.RELEASE.jar"]
-FROM openjdk:8-jre-alpine
+FROM openjdk:8-jdk-alpine
 VOLUME /tmp
-COPY . /target/test-2.1.2.RELEASE.jar
-ENTRYPOINT ["java","-jar","/target/test-2.1.2.RELEASE.jar"]
+COPY target/test-2.1.2.RELEASE.jar /app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
+EXPOSE 8188
