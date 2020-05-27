@@ -18,6 +18,6 @@ VOLUME /tmp
 #COPY target/test-2.1.2.RELEASE.jar /usr/myapp/app.jar
 #WORKDIR /usr/myapp
 #EXPOSE 8080
-COPY target/test-0.1.0.jar /app.jar
+COPY . /app.jar
 ENTRYPOINT ["java", "-jar", "/app.jar"]
 #CMD ["java", "-Xms128m", "-Xmx256m", "-jar", "app.jar"]
