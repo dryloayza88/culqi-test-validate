@@ -9,4 +9,4 @@
 FROM openjdk:8-jre-alpine
 VOLUME /tmp
 COPY . /target/test-2.1.2.RELEASE.jar
-ENTRYPOINT ["java","-jar","test-2.1.2.RELEASE.jar"]
+ENTRYPOINT ["java","-jar","/target/test-2.1.2.RELEASE.jar"]
