@@ -65,9 +65,17 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-                    <configuration>
-                        <executable>true</executable>
-                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                            <configuration>
+                                <classifier>spring-boot</classifier>
+                                <mainClass>com.culqi.test.TestApplication</mainClass>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.sonarsource.scanner.maven</groupId>

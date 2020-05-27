@@ -1,9 +1,7 @@
 apiVersion : apps/v1
 kind: Deployment
 metadata:
-  name: dryloayzaculqitestvalidate
-  labels:
-    app: dryloayzaculqitestvalidate
+  name: dryloayza-deployment
 spec:
   replicas: 1
   selector:
@@ -15,8 +13,9 @@ spec:
         app: dryloayzaculqitestvalidate 
     spec:
       containers:
-        - name: dryloayzadeployment
+        - name: dryloayza-server
           image: diegocontainerregistrytest.azurecr.io/dryloayzaculqitestvalidate
-          imagePullPolicy: Always
+          imagePullPolicy: "Always"
           ports:
-          - containerPort: 8085
+            - name: http-port
+              containerPort: 8080

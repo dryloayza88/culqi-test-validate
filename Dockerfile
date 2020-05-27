@@ -1,8 +1,12 @@
 #Dockerfile
-FROM openjdk:8-jdk-alpine
-RUN mkdir -p /usr/local/app
-WORKDIR /usr/local/app
-COPY . usr/local/app/test-2.1.2.RELEASE.jar
-EXPOSE 8085
+#FROM openjdk:8-jdk-alpine
+#RUN mkdir -p /usr/local/app
+#WORKDIR /usr/local/app
+#COPY . usr/local/app/test-2.1.2.RELEASE.jar
 #EXPOSE 8085
-CMD ["java","-jar","/test-2.1.2.RELEASE.jar"]
+#EXPOSE 8085
+#CMD ["java","-jar","/test-2.1.2.RELEASE.jar"]
+FROM openjdk:8-jre-alpine
+VOLUME /tmp
+COPY /target/test-2.1.2.RELEASE.jar app.jar
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
